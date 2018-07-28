@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">BikeData</string>
+    <string name="bikeDataStats">bikeDataStats</string>
+</resources>

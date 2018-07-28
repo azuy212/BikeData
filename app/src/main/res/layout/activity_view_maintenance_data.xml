@@ -1,0 +1,109 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools= "http://schemas.android.com/tools"
+    android:scrollbars="vertical"
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    tools:context=".ViewMaintenanceDataActivity">
+
+    <HorizontalScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <TableLayout
+            android:id= "@+id/viewMaintenanceTableLayout"
+            android:layout_width= "wrap_content"
+            android:layout_height= "match_parent"
+            android:isScrollContainer="true"
+            android:stretchColumns="*" >
+
+            <TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sr#"
+                    android:textSize="18sp"
+                    android:padding="5dp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/headershape"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Maintenance Date"
+                    android:textSize="18sp"
+                    android:padding="5dp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/headershape"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Meter Reading"
+                    android:textSize="18sp"
+                    android:padding="5dp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/headershape"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MobilOil Company"
+                    android:textSize="18sp"
+                    android:padding="5dp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/headershape"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="MobilOilPrice"
+                    android:textSize="18sp"
+                    android:padding="5dp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/headershape"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Tuning Location"
+                    android:textSize="18sp"
+                    android:padding="5dp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/headershape"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Tuning Price"
+                    android:textSize="18sp"
+                    android:padding="5dp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/headershape"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Additional Parts"
+                    android:textSize="18sp"
+                    android:padding="5dp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/headershape"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Price"
+                    android:textSize="18sp"
+                    android:padding="5dp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/headershape"/>
+
+            </TableRow>
+
+        </TableLayout>
+
+    </HorizontalScrollView>
+
+</ScrollView>
