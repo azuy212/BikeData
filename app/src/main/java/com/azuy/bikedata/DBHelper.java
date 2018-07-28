@@ -11,10 +11,16 @@ import java.util.ArrayList;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    public DBHelper(Context context) {
+    /*
+    * DB Helper Constructor
+    * */
+    DBHelper(Context context) {
         super(context, Constants.DATABASE_NAME, null, 2);
     }
 
+    /*
+    * onCreate Method to creates all tables and vies required for this project
+    * */
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS " + Constants.FUEL_TABLE_NAME +
@@ -56,6 +62,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 " A Order by " + Constants.MAINTENANCE_DATE + " DESC");
     }
 
+    /*
+    * onUpgrade Method to handle Database update
+    * */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
@@ -66,7 +75,10 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertFuelFillingRecord
+    /*
+    * Insert Fuel Filling Record into the database
+    * */
+    boolean insertFuelFillingRecord
             (String fuelDate,
              int meterReading,
              int amountRs,
@@ -82,7 +94,10 @@ public class DBHelper extends SQLiteOpenHelper {
         return db.insert(Constants.FUEL_TABLE_NAME, null, contentValues) > 0;
     }
 
-    public boolean insertFuelReserveRecord(String reserveDate, int meterReading) {
+    /*
+    * Insert Fuel Reserve Record into the database
+    * */
+    boolean insertFuelReserveRecord(String reserveDate, int meterReading) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(Constants.RESERVE_DATE, reserveDate);
@@ -90,7 +105,10 @@ public class DBHelper extends SQLiteOpenHelper {
         return db.insert(Constants.RESERVE_TABLE_NAME, null, contentValues) > 0;
     }
 
-    public boolean insertMaintenanceRecord
+    /*
+    * Insert Maintenance Record into the database
+    * */
+    boolean insertMaintenanceRecord
             (int meterReading,
              String mobilOilCompany, int mobilOilPrice,
              String tuningLocation, int tuningPrice,
@@ -110,6 +128,9 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
+    /*
+    * Get Specific Record from each of three table by giving data
+    * */
     public Cursor getFuelFillingRecord(String fillingDate) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM " + Constants.FUEL_TABLE_NAME
@@ -129,21 +150,24 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean hasFuelFillingRecord(String fillingDate) {
+    /*
+    * Check if Specific Record is available on provided data
+    * */
+    boolean hasFuelFillingRecord(String fillingDate) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM " + Constants.FUEL_TABLE_NAME
                 + " WHERE DATE(" + Constants.FUEL_FILLING_DATE + ")"
                 + " = DATE('" + fillingDate + "')", null).getCount() > 0;
     }
 
-    public boolean hasFuelReserveRecord(String reserveDate) {
+    boolean hasFuelReserveRecord(String reserveDate) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM " + Constants.RESERVE_TABLE_NAME
                 + " WHERE DATE(" + Constants.RESERVE_DATE + ")"
                 + " = DATE('" + reserveDate + "')", null).getCount() > 0;
     }
 
-    public boolean hasMaintenanceRecord(String maintenanceDate) {
+    boolean hasMaintenanceRecord(String maintenanceDate) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM " + Constants.MAINTENANCE_TABLE_NAME
                 + " WHERE DATE(" + Constants.MAINTENANCE_DATE + ")"
@@ -151,21 +175,24 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean deleteFuelFillingRecord(String fillingDate) {
+    /*
+    * Delete Specific Record on provided data
+    * */
+    boolean deleteFuelFillingRecord(String fillingDate) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(Constants.FUEL_TABLE_NAME,
                 Constants.FUEL_FILLING_DATE + " = ? ",
                 new String[]{fillingDate}) > 0;
     }
 
-    public boolean deleteFuelReserveRecord(String reserveDate) {
+    boolean deleteFuelReserveRecord(String reserveDate) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(Constants.RESERVE_TABLE_NAME,
                 Constants.RESERVE_DATE + " = ? ",
                 new String[]{reserveDate}) > 0;
     }
 
-    public boolean deleteMaintenanceRecord(String maintenanceDate) {
+    boolean deleteMaintenanceRecord(String maintenanceDate) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(Constants.MAINTENANCE_TABLE_NAME,
                 Constants.MAINTENANCE_DATE + " = ? ",
@@ -173,26 +200,32 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public Cursor getAllFuelFillingRecords() {
+    /*
+    * Get all records of each table
+    * */
+    Cursor getAllFuelFillingRecords() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM " + Constants.FUEL_TABLE_VIEW +
                 " ORDER BY DATE(" + Constants.FUEL_FILLING_DATE + ") DESC", null);
     }
 
-    public Cursor getAllFuelReserveRecords() {
+    Cursor getAllFuelReserveRecords() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM " + Constants.RESERVE_TABLE_VIEW +
                 " ORDER BY DATE(" + Constants.RESERVE_DATE + ") DESC", null);
     }
 
-    public Cursor getAllMaintenanceRecords() {
+    Cursor getAllMaintenanceRecords() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM " + Constants.MAINTENANCE_TABLE_VIEW +
                 " ORDER BY DATE(" + Constants.MAINTENANCE_DATE + ") DESC", null);
     }
 
 
-    public ArrayList<Float> getBikeDataDifference
+    /*
+    * Generic function to get data difference of specified tables on specific ids
+    * */
+    ArrayList<Float> getBikeDataDifference
             (String firstColumnName,
              String secondColumnName,
              String firstTableName,
@@ -217,28 +250,54 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public ArrayList<?> executeSQLQuery(String query) {
-        ArrayList<Integer> iQueryResult = new ArrayList<>();
-        ArrayList<Float> fQueryResult = new ArrayList<>();
 
+    /*
+    * Get Mileage Data
+    * */
+    ArrayList<Float> getBikeMileagePerLt() {
+        ArrayList<Float> bikeMileagePerLt = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cQueryResult = db.rawQuery(query, null);
-        if(cQueryResult.moveToNext()) {
-            if(cQueryResult.getType(0) == Cursor.FIELD_TYPE_INTEGER){
-                while (cQueryResult.moveToNext()){
-                    iQueryResult.add(cQueryResult.getInt(0));
-                }
-                return iQueryResult;
-            } else if (cQueryResult.getType(0) == Cursor.FIELD_TYPE_FLOAT) {
-                while (cQueryResult.moveToNext()){
-                    fQueryResult.add(cQueryResult.getFloat(0));
-                }
-                return fQueryResult;
-            }
+
+        Cursor cBikeMileagePerLt = db.rawQuery(
+                "SELECT (\n" +
+                        "CAST((JULIANDAY(A." + Constants.RESERVE_METERING_READING + ") - " +
+                        "      JULIANDAY(B." + Constants.RESERVE_METERING_READING + ")) AS FLOAT)\n" +
+                        " /\n" +
+                        "(Select " + Constants.FUEL_AMOUNT_LT + " from " + Constants.FUEL_TABLE_VIEW + " C " +
+                        "where C." + Constants.FUEL_VIEW_ID_COLUMN + " = B." + Constants.RESERVE_VIEW_ID_COLUMN + ")) \n" +
+                        "FROM " + Constants.RESERVE_TABLE_VIEW + " A\n" +
+                        "JOIN " + Constants.RESERVE_TABLE_VIEW + " B\n" +
+                        "On A." + Constants.RESERVE_VIEW_ID_COLUMN + " = B." + Constants.RESERVE_VIEW_ID_COLUMN + "-1", null
+        );
+        while (cBikeMileagePerLt.moveToNext()) {
+            bikeMileagePerLt.add(cBikeMileagePerLt.getFloat(0));
         }
-        cQueryResult.close();
-        return null;
+        cBikeMileagePerLt.close();
+
+        return bikeMileagePerLt;
     }
 
+    ArrayList<Float> getBikeMileagePerDay() {
+        ArrayList<Float> bikeMileagePerDay = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cBikeMileagePerDay = db.rawQuery(
+                "SELECT (\n" +
+                        "CAST((JULIANDAY(A." + Constants.RESERVE_METERING_READING + ") - " +
+                        "      JULIANDAY(B." + Constants.RESERVE_METERING_READING + ")) AS FLOAT)\n" +
+                        " /\n" +
+                        "CAST((JULIANDAY(A." + Constants.RESERVE_DATE + ") - " +
+                        "      JULIANDAY(B." + Constants.RESERVE_DATE + ")) AS FLOAT))\n" +
+                        "FROM " + Constants.RESERVE_TABLE_VIEW + " A\n" +
+                        "JOIN " + Constants.RESERVE_TABLE_VIEW + " B\n" +
+                        "On A." + Constants.RESERVE_VIEW_ID_COLUMN + " = B." + Constants.RESERVE_VIEW_ID_COLUMN + "-1", null
+        );
+        while (cBikeMileagePerDay.moveToNext()) {
+            bikeMileagePerDay.add(cBikeMileagePerDay.getFloat(0));
+        }
+        cBikeMileagePerDay.close();
+
+        return bikeMileagePerDay;
+    }
 
 }

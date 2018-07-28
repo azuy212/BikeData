@@ -41,7 +41,7 @@ public class ViewFuelDataActivity extends AppCompatActivity {
     private void initialize() {
         bikeDataDB = new DBHelper(this);
         fuelActivityListView = (ListView) findViewById(R.id.viewFuelDataListView);
-        feedFuelData = new ArrayList<HashMap<String, String>>();
+        feedFuelData = new ArrayList<>();
     }
 
     private void fillListViewWithFuelData(){
@@ -55,14 +55,15 @@ public class ViewFuelDataActivity extends AppCompatActivity {
                         Constants.FUEL_AMOUNT_LT, Constants.FUEL_PETROL_PUMP
                 };
 
-                HashMap<String, String> fuelHeaderMap = new HashMap<String, String>();
-                fuelHeaderMap.put(Constants.FUEL_VIEW_ID_COLUMN, "Fuel Id");
-                fuelHeaderMap.put(Constants.FUEL_FILLING_DATE, "Filling\nDate");
-                fuelHeaderMap.put(Constants.FUEL_METER_READING, "Meter Reading");
-                fuelHeaderMap.put(Constants.FUEL_AMOUNT_RS, "Amount (Rs.)");
-                fuelHeaderMap.put(Constants.FUEL_AMOUNT_LT, "Amount (Lt.)");
-                fuelHeaderMap.put(Constants.FUEL_PETROL_PUMP, "Petrol\nPump");
-                feedFuelData.add(fuelHeaderMap);
+//                HashMap<String, String> fuelHeaderMap = new HashMap<String, String>();
+//                fuelHeaderMap.put(Constants.FUEL_VIEW_ID_COLUMN, "Fuel Id");
+//                fuelHeaderMap.put(Constants.FUEL_FILLING_DATE, "Filling\nDate");
+//                fuelHeaderMap.put(Constants.FUEL_METER_READING, "Meter Reading");
+//                fuelHeaderMap.put(Constants.FUEL_AMOUNT_RS, "Amount (Rs.)");
+//                fuelHeaderMap.put(Constants.FUEL_AMOUNT_LT, "Amount (Lt.)");
+//                fuelHeaderMap.put(Constants.FUEL_PETROL_PUMP, "Petrol\nPump");
+//                feedFuelData.add(fuelHeaderMap);
+                fuelActivityListView.addHeaderView(getLayoutInflater().inflate(R.layout.fueldataheaderviewlayout, null));
 
                 while (cursor.moveToNext()) {
 
