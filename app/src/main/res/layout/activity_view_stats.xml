@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.azuy.bikedata.ViewStatsActivity">
 
-    <ScrollView
+    <HorizontalScrollView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:layout_weight="1">
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
 
         <TableLayout
             android:id= "@+id/viewStatsTableLayout"
-            android:layout_width= "match_parent"
+            android:layout_width="wrap_content"
             android:layout_height= "match_parent"
             android:isScrollContainer="true"
             android:stretchColumns="1" >
@@ -24,56 +22,56 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:textSize="18sp"
+                    android:background="@drawable/headershape"
                     android:gravity="center"
                     android:padding="5dp"
+                    android:text="Category"
                     android:textColor="@color/colorWhite"
-                    android:background="@drawable/headershape"/>
+                    android:textSize="18sp" />
 
                 <TextView
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/headershape"
+                    android:gravity="center"
+                    android:padding="5dp"
                     android:text="Latest"
-                    android:textSize="18sp"
-                    android:gravity="center"
-                    android:padding="5dp"
                     android:textColor="@color/colorWhite"
-                    android:background="@drawable/headershape"/>
+                    android:textSize="18sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/headershape"
+                    android:gravity="center"
+                    android:padding="5dp"
                     android:text="Average"
-                    android:textSize="18sp"
-                    android:gravity="center"
-                    android:padding="5dp"
                     android:textColor="@color/colorWhite"
-                    android:background="@drawable/headershape"/>
+                    android:textSize="18sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/headershape"
+                    android:gravity="center"
+                    android:padding="5dp"
                     android:text="Minimum"
-                    android:textSize="18sp"
-                    android:gravity="center"
-                    android:padding="5dp"
                     android:textColor="@color/colorWhite"
-                    android:background="@drawable/headershape"/>
+                    android:textSize="18sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Maximum"
-                    android:textSize="18sp"
+                    android:background="@drawable/headershape"
                     android:gravity="center"
                     android:padding="5dp"
+                    android:text="Maximum"
                     android:textColor="@color/colorWhite"
-                    android:background="@drawable/headershape"/>
+                    android:textSize="18sp" />
 
             </TableRow>
         </TableLayout>
 
-    </ScrollView>
+    </HorizontalScrollView>
 
 </android.support.constraint.ConstraintLayout>

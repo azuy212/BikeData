@@ -6,23 +6,10 @@ import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.EntryXComparator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -93,6 +80,12 @@ public class ViewStatsActivity extends AppCompatActivity {
                 Constants.RESERVE_VIEW_ID_COLUMN, Constants.FUEL_VIEW_ID_COLUMN
         );
         printStatsOnTable(findLatestAvgMinMax("KMs(FR)", noOfKMsBetweenFillingAndReserve));
+
+        ArrayList<Float> bikeMileagePerLt = bikeDataDB.getBikeMileagePerLt();
+        printStatsOnTable(findLatestAvgMinMax("Mileage (km/lt)", bikeMileagePerLt));
+
+        ArrayList<Float> bikeMileagePerDay = bikeDataDB.getBikeMileagePerDay();
+        printStatsOnTable(findLatestAvgMinMax("Mileage (km/day)", bikeMileagePerDay));
 
     }
 

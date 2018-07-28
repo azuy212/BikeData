@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -125,11 +126,24 @@ public class ReserveActivity extends AppCompatActivity {
     }
 
     private void addNotification() {
+        ArrayList<Float> noOfKMsBetweenReserves = bikeDataDB.getBikeDataDifference(
+                Constants.RESERVE_METERING_READING, Constants.RESERVE_METERING_READING,
+                Constants.RESERVE_TABLE_VIEW, Constants.RESERVE_TABLE_VIEW,
+                Constants.RESERVE_VIEW_ID_COLUMN, Constants.RESERVE_VIEW_ID_COLUMN
+        );
+        ArrayList<Float> bikeMileagePerLt = bikeDataDB.getBikeMileagePerLt();
+        ArrayList<Float> bikeMileagePerDay = bikeDataDB.getBikeMileagePerDay();
+
+        String notificationMessage = "Distance (R): " + Math.round(noOfKMsBetweenReserves.get(0)) + " km" + "\n" +
+                "Mileage (km/lt): " + bikeMileagePerLt.get(0) + "\n" +
+                "Mileage (km/day): " + bikeMileagePerDay.get(0);
+
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(android.R.drawable.ic_dialog_alert)
                         .setContentTitle(Constants.RESERVE_NOTIFICATION_TITLE)
                         .setContentText(Constants.RESERVE_NOTIFICATION_MESSAGE)
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText(notificationMessage))
                         .setPriority(NotificationCompat.PRIORITY_HIGH);
         builder.setOngoing(true);
         builder.setDefaults(Notification.DEFAULT_SOUND);
