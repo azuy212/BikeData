@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.azuy.bikedata.ViewStatsActivity">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <TableLayout
+            android:id= "@+id/viewStatsTableLayout"
+            android:layout_width= "match_parent"
+            android:layout_height= "match_parent"
+            android:isScrollContainer="true"
+            android:stretchColumns="1" >
+
+            <TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/headershape"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Latest"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/headershape"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Average"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/headershape"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Minimum"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/headershape"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Maximum"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/headershape"/>
+
+            </TableRow>
+        </TableLayout>
+
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>
