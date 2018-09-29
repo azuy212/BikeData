@@ -32,6 +32,7 @@ public interface Constants {
     String MAINTENANCE_VIEW_ID_COLUMN = "MaintenanceId";
 
     int WRITE_EXTERNAL_STORAGE_REQUEST = 112;
+    int RESTORE_FILE_CHOOSER_RESULT_CODE = 987;
 
     String RESERVE_NOTIFICATION_TITLE = "Your Bike is on Reserve";
     String RESERVE_NOTIFICATION_MESSAGE = "Please refill as soon as possible";
