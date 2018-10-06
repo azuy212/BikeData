@@ -4,8 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,6 +18,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.obsez.android.lib.filechooser.ChooserDialog;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -114,21 +116,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.RESTORE_FILE_CHOOSER_RESULT_CODE) {
-            if (resultCode == RESULT_OK) {
-                Uri selectedFileUri = data.getData();
-                File selectedFile = new File(selectedFileUri.getPath());
-                makeToast("Selected File: " + selectedFileUri.getPath(), 3000);
-                restoreBikeDate(selectedFile);
-            } else {
-                makeToast("File not selected", 3000);
-            }
-        }
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
@@ -136,17 +123,15 @@ public class MainActivity extends AppCompatActivity {
         switch (id) {
 
             case R.id.action_restore:
-                Intent fileChooserIntent = new Intent()
-                        .setType("*/*")
-                        .setAction(Intent.ACTION_GET_CONTENT);
-
-                startActivityForResult(Intent.createChooser(fileChooserIntent, "Select Database Backup"),
-                        Constants.RESTORE_FILE_CHOOSER_RESULT_CODE);
-//                restoreBikeDate();
+                getDatabaseRestoreChooserDialog().show();
                 return true;
 
             case R.id.action_about:
                 makeToast("Bike Data!!!", 2000);
+                return true;
+
+            case R.id.action_backupPath:
+                getDatabaseBackupChooserDialog().show();
                 return true;
 
             case R.id.action_exit:
@@ -164,55 +149,95 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    public void restoreBikeDate(File backupDatabaseFile) {
+    public ChooserDialog getDatabaseRestoreChooserDialog() {
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, 0);
+        final SharedPreferences.Editor sharedPrefEditor = sharedPreferences.edit();
+        String defaultFilePickerPath = sharedPreferences.getString(
+                Constants.SHARED_PREFERENCE_RESTORE_FILE_PICKER_PATH_KEY,
+                Environment.getExternalStorageDirectory().getAbsolutePath()
+        );
+        return getFileChooserDialog(
+                defaultFilePickerPath,
+                new ChooserDialog.Result() {
+                    @Override
+                    public void onChoosePath(String path, File pathFile) {
+                        sharedPrefEditor.putString(Constants.SHARED_PREFERENCE_RESTORE_FILE_PICKER_PATH_KEY, path);
+                        sharedPrefEditor.apply();
+                        restoreBikeDate(pathFile);
+                    }
+                },
+                false);
+    }
+
+    public ChooserDialog getDatabaseBackupChooserDialog() {
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, 0);
+        final SharedPreferences.Editor sharedPrefEditor = sharedPreferences.edit();
+        String defaultFilePickerPath = sharedPreferences.getString(
+                Constants.SHARED_PREFERENCE_BACKUP_FILE_PICKER_PATH_KEY,
+                Environment.getExternalStorageDirectory().getAbsolutePath()
+        );
+        return getFileChooserDialog(
+                defaultFilePickerPath,
+                new ChooserDialog.Result() {
+                    @Override
+                    public void onChoosePath(String path, File pathFile) {
+                        sharedPrefEditor.putString(Constants.SHARED_PREFERENCE_BACKUP_FILE_PICKER_PATH_KEY, path);
+                        sharedPrefEditor.apply();
+                    }
+                },
+                true);
+    }
+
+    public ChooserDialog getFileChooserDialog(
+            String defaultFilePickerPath,
+            ChooserDialog.Result resultCallback
+            , boolean folderChooser
+    ) {
+        ChooserDialog chooserDialog = new ChooserDialog(this);
+        if (folderChooser) {
+            chooserDialog.withFilter(true, false);
+            chooserDialog.enableOptions(true);
+        }
+        chooserDialog.withStartFile(defaultFilePickerPath);
+        chooserDialog.withChosenListener(resultCallback);
+        chooserDialog.build();
+        return chooserDialog;
+    }
+
+    public void restoreBikeDate(final File backupDatabaseFile) {
         grantAccessForExternalStorage();
         try {
-            File sd = Environment.getExternalStorageDirectory();
-            File data = Environment.getDataDirectory();
+            final File databasePath = getApplicationContext().getDatabasePath(Constants.DATABASE_NAME);
 
-            if (sd.canWrite()) {
-                String defaultDBPath = "//data//" + getApplicationContext().getApplicationInfo().packageName
-                        + "//databases//" + Constants.DATABASE_NAME;
-
-                final File defaultDB = new File(data, defaultDBPath);
-
-
-                final FileChannel src = new FileInputStream(backupDatabaseFile).getChannel();
-                final FileChannel dst = new FileOutputStream(defaultDB).getChannel();
-
-                AlertDialog.Builder builder;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    builder = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_Material_Dialog_Alert);
-                } else {
-                    builder = new AlertDialog.Builder(MainActivity.this);
-                }
-                builder.setTitle("Replace Database")
-                        .setMessage("Are you sure you want to replace your database?")
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                try {
-                                    dst.transferFrom(src, 0, src.size());
-                                } catch (IOException ioe) {
-                                    makeToast("Transfer Error Occured", 2000);
-                                }
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // do nothing
-                            }
-                        })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
-
-                dst.transferFrom(src, 0, src.size());
-                src.close();
-                dst.close();
-                Toast.makeText(getBaseContext(), "Backup Created Successfully!", Toast.LENGTH_LONG).show();
-
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_Material_Dialog_Alert);
             } else {
-                Toast.makeText(this, "Unable to write on SD Card", Toast.LENGTH_SHORT).show();
+                builder = new AlertDialog.Builder(MainActivity.this);
             }
+            builder.setTitle("Replace Database")
+                    .setMessage("Are you sure you want to replace your database?")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            try {
+                                FileChannel src = new FileInputStream(backupDatabaseFile).getChannel();
+                                FileChannel dst = new FileOutputStream(databasePath).getChannel();
+                                dst.transferFrom(src, 0, src.size());
+                                src.close();
+                                dst.close();
+                                Toast.makeText(getBaseContext(), "Backup Restored Successfully!", Toast.LENGTH_LONG).show();
+                            } catch (IOException ioe) {
+                                makeToast("Transfer Error Occurred: " + ioe.getMessage(), 2000);
+                            }
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // do nothing
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -221,17 +246,17 @@ public class MainActivity extends AppCompatActivity {
     public void backupDatabase() {
         grantAccessForExternalStorage();
         try {
-            File sd = Environment.getExternalStorageDirectory();
-            File data = Environment.getDataDirectory();
+            File internalStorage = Environment.getExternalStorageDirectory();
 
-            if (sd.canWrite()) {
-                String currentDBPath = "//data//com.azuy.bikedata//databases//" + Constants.DATABASE_NAME;
-                String backupDBPath = "//BikeData//" + Constants.DATABASE_NAME;
-                File currentDB = new File(data, currentDBPath);
-                File backupDB = new File(sd, backupDBPath);
+            if (internalStorage.canWrite()) {
+                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, 0);
+                String backupDBPath = sharedPreferences.getString(Constants.SHARED_PREFERENCE_BACKUP_FILE_PICKER_PATH_KEY,
+                        Constants.DATABASE_NAME);
+                File databasePath = getApplicationContext().getDatabasePath(Constants.DATABASE_NAME);
+                File backupDB = new File(backupDBPath, Constants.DATABASE_NAME);
 
-                if (currentDB.exists()) {
-                    FileChannel src = new FileInputStream(currentDB).getChannel();
+                if (databasePath.exists()) {
+                    FileChannel src = new FileInputStream(databasePath).getChannel();
                     FileChannel dst = new FileOutputStream(backupDB).getChannel();
                     dst.transferFrom(src, 0, src.size());
                     src.close();
@@ -244,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Unable to write on SD Card", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Backup Creation Exception: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
