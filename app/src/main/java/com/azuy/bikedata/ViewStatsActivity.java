@@ -36,7 +36,7 @@ public class ViewStatsActivity extends AppCompatActivity {
         viewStatsTableLayout = (TableLayout) findViewById(R.id.viewStatsTableLayout);
     }
 
-    private void generateBikeStats () {
+    private void generateBikeStats() {
         ArrayList<Float> noOfDaysBetweenFuelFillings = bikeDataDB.getBikeDataDifference(
                 Constants.FUEL_FILLING_DATE, Constants.FUEL_FILLING_DATE,
                 Constants.FUEL_TABLE_VIEW, Constants.FUEL_TABLE_VIEW,
@@ -57,7 +57,6 @@ public class ViewStatsActivity extends AppCompatActivity {
                 Constants.RESERVE_VIEW_ID_COLUMN, Constants.FUEL_VIEW_ID_COLUMN
         );
         printStatsOnTable(findLatestAvgMinMax("Days(FR)", noOfDaysBetweenFillingAndReserve));
-
 
 
         ArrayList<Float> noOfKMsBetweenFuelFillings = bikeDataDB.getBikeDataDifference(
@@ -90,29 +89,33 @@ public class ViewStatsActivity extends AppCompatActivity {
     }
 
 
-    private ArrayList<String> findLatestAvgMinMax(String statsTitle ,List<Float> arrayListOfStats) {
+    private ArrayList<String> findLatestAvgMinMax(String statsTitle, List<Float> arrayListOfStats) {
         ArrayList<String> arrayListToReturn = new ArrayList<>();
 
-        arrayListToReturn.add(statsTitle);
-        arrayListToReturn.add(String.format(Locale.getDefault(), "%.2f",
-                arrayListOfStats.get(0)));
+        try {
+            arrayListToReturn.add(statsTitle);
+            arrayListToReturn.add(String.format(Locale.getDefault(), "%.2f",
+                    arrayListOfStats.get(0)));
 
-        int sumOfArrayListOfStats = 0;
-        for (float value : arrayListOfStats) {
-            sumOfArrayListOfStats += value;
+            int sumOfArrayListOfStats = 0;
+            for (float value : arrayListOfStats) {
+                sumOfArrayListOfStats += value;
+            }
+            arrayListToReturn.add(String.format(Locale.getDefault(), "%.2f",
+                    (float) sumOfArrayListOfStats / arrayListOfStats.size()));
+
+            arrayListToReturn.add(String.format(Locale.getDefault(), "%.2f",
+                    Collections.min(arrayListOfStats)));
+            arrayListToReturn.add(String.format(Locale.getDefault(), "%.2f",
+                    Collections.max(arrayListOfStats)));
+        } catch (Exception e) {
+            arrayListToReturn.add("No Data Found");
         }
-        arrayListToReturn.add(String.format(Locale.getDefault(), "%.2f",
-                (float)sumOfArrayListOfStats / arrayListOfStats.size()));
-
-        arrayListToReturn.add(String.format(Locale.getDefault(), "%.2f",
-                Collections.min(arrayListOfStats)));
-        arrayListToReturn.add(String.format(Locale.getDefault(), "%.2f",
-                Collections.max(arrayListOfStats)));
 
         return arrayListToReturn;
     }
 
-    private void printStatsOnTable (ArrayList<String> rowData) {
+    private void printStatsOnTable(ArrayList<String> rowData) {
         TableRow row = new TableRow(this);
         row.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,
                 TableLayout.LayoutParams.WRAP_CONTENT));

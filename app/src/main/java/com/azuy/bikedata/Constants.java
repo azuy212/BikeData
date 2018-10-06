@@ -31,6 +31,10 @@ public interface Constants {
     String MAINTENANCE_TABLE_VIEW = "bikeMaintenanceActivityView";
     String MAINTENANCE_VIEW_ID_COLUMN = "MaintenanceId";
 
+    String SHARED_PREFERENCE_NAME = "BikeDataSharedPreference";
+    String SHARED_PREFERENCE_RESTORE_FILE_PICKER_PATH_KEY = "RestoreFilePickerLocation";
+    String SHARED_PREFERENCE_BACKUP_FILE_PICKER_PATH_KEY = "BackupFilePickerLocation";
+
     int WRITE_EXTERNAL_STORAGE_REQUEST = 112;
 
     String RESERVE_NOTIFICATION_TITLE = "Your Bike is on Reserve";
