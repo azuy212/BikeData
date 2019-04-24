@@ -8,114 +8,124 @@
 
     <TextView
         android:id="@+id/tvAppTitle"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
-        android:text="Bike Data"
+
+        android:text="@string/app_name"
         android:textAlignment="center"
         android:textSize="24sp"
+
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/tvRegNo"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+
+        android:text="@string/bike_registration_no"
+        android:textAlignment="center"
+        android:textSize="30sp"
+
+        app:layout_constraintBottom_toTopOf="@+id/btnReserve"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAppTitle" />
+
     <Button
         android:id="@+id/btnFuel"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Fuel"
 
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
         android:layout_width="150dp"
         android:layout_height="50dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+
         android:background="@drawable/buttonshape"
+        android:text="@string/fuel_btn_title"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
 
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/tvAppTitle"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintVertical_bias="0.498" />
+        app:layout_constraintVertical_bias="0.5" />
 
     <Button
         android:id="@+id/btnReserve"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Reserve"
 
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
         android:layout_width="150dp"
         android:layout_height="50dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+
         android:background="@drawable/buttonshape"
+        android:text="@string/reserve_btn_title"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
 
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toRightOf="@+id/tvAppTitle"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintVertical_bias="0.498" />
+        app:layout_constraintVertical_bias="0.5" />
 
     <Button
         android:id="@+id/btnMaintenance"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Maintenance"
 
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
         android:layout_width="150dp"
         android:layout_height="50dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+
         android:background="@drawable/buttonshape"
+        android:text="@string/maintenance_btn_title"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/tvAppTitle"
         app:layout_constraintTop_toBottomOf="@+id/btnFuel"
-        app:layout_constraintVertical_bias="0.503" />
+        app:layout_constraintVertical_bias="0.5" />
 
     <Button
         android:id="@+id/btnViewData"
-        android:text="View Data"
 
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
         android:layout_width="150dp"
         android:layout_height="50dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+
         android:background="@drawable/buttonshape"
+        android:text="@string/view_data_btn_title"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
 
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/btnReserve"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/tvAppTitle"
-        android:layout_marginLeft="8dp"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintVertical_bias="0.503" />
-
-    <TextView
-        android:id="@+id/tvRegNo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="LEM-16-2756"
-        android:textAlignment="center"
-        android:textSize="30sp"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/tvAppTitle"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/tvAppTitle"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnReserve" />
+        app:layout_constraintTop_toBottomOf="@+id/btnReserve"
+        app:layout_constraintVertical_bias="0.5" />
 
 </android.support.constraint.ConstraintLayout>
